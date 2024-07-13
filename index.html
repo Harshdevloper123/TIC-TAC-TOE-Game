@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic-Tac-Toe Game</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #000000;
+        text-align: center;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .container {
+        height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5vmin;
+        flex-direction: column;
+      }
+      .game {
+        height: 60vmin;
+        width: 60vmin;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5vmin;
+      }
+      .box {
+        height: 18vmin;
+        width: 18vmin;
+        border-radius: 1rem;
+        border: none;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+        font-size: 10vmin;
+        color: #b0413e;
+        background-color: aliceblue;
+      }
+      h1 {
+        margin-top: 20px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        color: greenyellow;
+        text-shadow: 0 0 1rem rgba(0, 0, 0, 0.9);
+        font-size: 30px;
+      }
+      #reset-btn , .btn {
+        padding: 0.8rem;
+        font-size: 1.25rem;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        background-color: greenyellow;
+        border: none;
+        font-weight: 550;
+        border-radius: 2vmin;
+        color: #181e1f;
+      }
+
+
+      #reset-btn{
+        margin-top: -30px;
+      }
+
+
+      #quit{
+        margin-top: 50px;
+        padding: 0.8rem;
+        font-size: 1.25rem;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        background-color: greenyellow;
+        border: none;
+        font-weight: 550;
+        border-radius: 2vmin;
+        color: #181e1f;
+      }
+
+      .btns{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        text-align: center;
+
+      }
+
+      #Help{
+        margin-top: 50px;
+        padding: 0.8rem;
+        font-size: 1.25rem;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        background-color: greenyellow;
+        border: none;
+        font-weight: 550;
+        border-radius: 2vmin;
+        color: #181e1f;
+      }
+
+      #msg {
+        color: #ffffc7;
+        font-size: 30px;
+      }
+      .msg-container {
+        margin: 20px;
+      }
+      .hide {
+        display: none;
+      }
+
+      .home{
+       margin-top: 250px;
+      }
+
+      .show{
+        display: block;
+      }
+
+      label{
+        color: white;
+      }
+
+      .close-btn{
+        margin-top: 50px;
+        padding: 0.8rem;
+        font-size: 1.25rem;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        background-color: greenyellow;
+        border: none;
+        font-weight: 550;
+        border-radius: 2vmin;
+        color: #181e1f;
+      }
+
+      span{
+        color: greenyellow;
+      }
+
+      .popup {
+            width: 90%;
+            max-width: 400px;
+            border-radius: 6px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            visibility: hidden;
+            text-align: center;
+            padding: 30px;
+            backdrop-filter: blur(50px);
+            background: transparent;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: transform 0.4s, top 0.4s, visibility 0s 0.4s;
+            color: #fff;
+        }
+        
+        p{
+          font-size: 20px;
+        }
+        
+        .popup.visible {
+            transform: translate(-50%, -50%) scale(1);
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .popup.visible ~ .container {
+            filter: blur(50px);
+        }
+
+        .popup h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin: 30px 0 10px;
+            color: #000;
+        }
+
+        .popup ul li {
+            list-style-type: none;
+            margin-bottom: 10px;
+        }
+
+        .popup ul li a {
+            color: black;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-evenly;
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+
+        .open-popup {
+            visibility: visible;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .close-popup {
+            visibility: hidden;
+        }
+
+        .help-text{
+          overflow-x: auto;
+          width: 200px;
+          text-align: center;
+          margin-left: 70px;
+          /* display: flex; */
+          /* align-items: center; */
+          /* justify-content: center; */
+        }
+
+      @media only screen and (max-width: 768px) {
+        .game {
+          height: 80vmin;
+          width: 80vmin;
+        }
+        .box {
+          height: 25vmin;
+          width: 25vmin;
+          font-size: 12vmin;
+        }
+        #msg {
+          font-size: 6vmin;
+        }
+
+        .popup h2 {
+                font-size: 1.2rem;
+            }
+
+            .popup ul li a {
+                font-size: 0.9rem;
+            }
+      }
+      @media only screen and (max-width: 600px) {
+        .container {
+          height: auto;
+          padding: 20px;
+        }
+        h1 {
+          font-size: 24px;
+        }
+        #reset-btn {
+          padding: 0.5rem;
+          font-size: 2rem;
+          border-radius: 1vmin;
+        }
+
+        #quit{
+          padding: 0.5rem;
+          font-size: 2rem;
+          border-radius: 1vmin;
+        }
+
+        #Help{
+          padding: 0.5rem;
+          font-size: 2rem;
+          border-radius: 1vmin;
+        }
+
+        .game {
+          height: 90vmin;
+          width: 90vmin;
+        }
+        .box {
+          height: 28vmin;
+          width: 28vmin;
+          font-size: 14vmin;
+        }
+        #msg {
+          font-size: 20px;
+        }
+
+        .popup h2 {
+                font-size: 1rem;
+            }
+
+            .popup ul li a {
+                font-size: 0.8rem;
+            }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="home hide show">
+        <h1>HEllo Everyone I am 
+          <br>
+          Maker of this Game.
+          <span id="small-text" style="font-size: 4px;">I don't Wanna tell my name bcoz u know.</span>
+        </h1>
+        <br>
+       <br>
+        <button class="btn" onclick="tabSwitch()">Start Game</button>
+      </div>
+   
+      <main class="game hide">
+        <h1>WElCOME to Offline Tic Tac Toe Game</h1>
+        <div class="pratiyogis" style="color: #fff;">
+          <div>
+            <label for="playerX">Player X:</label>
+            <span id="playerX"></span>
+        </div>
+        <div>
+            <label for="playerO" style="margin-top: 10px;">Player O:</label>
+            <span id="playerO"></span>
+        </div>
+      </div>
+        <div class="msg-container hide">
+          <p id="msg">Winner</p>
+        </div>
+        <div class="container">
+          <div class="game">
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+          </div>
+        </div>
+        
+        <button id="reset-btn">Reset</button>
+
+        <button id="quit" onclick="quit()">Quit</button>
+
+        <button id="Help" onclick="toggleMenu()">HElP</button>
+      </main>
+
+      <div class="popup" id="menuPopup">
+        <div class="help-text" style="color: whitesmoke;">
+          <h1 style="color: white;"> So help is </h1>
+          <p>Bhai/Behen agar tum school life jiye ho to katam kuti(Tic-Tac-Toe) to kehele hoge ya sune hoge to vahi ha bhai/bhen ye same ha ,bas ye page barbad nahi karta.</p>
+          <h3>IN English</h3>
+          <p>
+            SO simply it's game . thanks for giving me a chance to show my game and also i wanna tell u something about my English. my english is that english whch is used by me only so if u can't understant my Englishg then u have to take tution of it. bcoz this is a very hard english course which name is (ITUS). 
+          </p>
+        </div>
+        <button onclick="hideMenu()" style="width: 200px;" class="close-btn">Close
+        </button>
+      </div>
+    </div>
+    
+    <script>
+      // name of player and switch tab
+      function tabSwitch() {
+        app.querySelector(".home").classList.remove("show");
+        app.querySelector(".game").classList.add("show");
+       
+        let nameX, nameO;
+
+        while (!nameX) {
+            nameX = prompt("Name OF player who plays as X:");
+        }
+
+        while (!nameO) {
+            nameO = prompt("Name OF player who plays as O:");
+        }
+
+        console.log(nameX);
+        console.log(nameO);
+            
+        let Oplay = document.getElementById("playerO");
+        let Xplay = document.getElementById("playerX");
+
+        Xplay.textContent = nameX;
+        Oplay.textContent = nameO;
+      }
+
+      // main game code is here
+      let boxes = document.querySelectorAll(".box");
+      let resetBtn = document.querySelector("#reset-btn");
+      let msgContainer = document.querySelector(".msg-container");
+      let msg = document.querySelector("#msg");
+      let menuPopup = document.getElementById('menuPopup');
+      
+      let turnO = true;
+      let count = 0;
+
+      const winPatterns = [
+        [0, 1, 2],
+        [0, 3, 6],
+        [0, 4, 8],
+        [1, 4, 7],
+        [2, 5, 8],
+        [2, 4, 6],
+        [3, 4, 5],
+        [6, 7, 8],
+      ];
+
+      const resetGame = () => {
+        turnO = true;
+        count = 0;
+        enableBoxes();
+        msgContainer.classList.add("hide");
+      };
+
+      boxes.forEach((box) => {
+        box.addEventListener("click", () => {
+          if (turnO) {
+            box.innerText = "O";
+            turnO = false;
+          } else {
+            box.innerText = "X";
+            turnO = true;
+          }
+          box.disabled = true;
+          count++;
+
+          let isWinner = checkWinner();
+
+          if (count === 9 && !isWinner) {
+            gameDraw();
+          }
+        });
+      });
+
+      const gameDraw = () => {
+        msg.innerText = `Game is Draw. wow both noobs beacme pro`;
+        msgContainer.classList.remove("hide");
+        disableBoxes();
+      };
+
+      const disableBoxes = () => {
+        for (let box of boxes) {
+          box.disabled = true;
+        }
+      };
+
+      const enableBoxes = () => {
+        for (let box of boxes) {
+          box.disabled = false;
+          box.innerText = "";
+        }
+      };
+
+      const showWinner = (winner) => {
+        msg.innerText = `Congratulations, Winner is ${winner} 🎉`;
+        msgContainer.classList.remove("hide");
+        disableBoxes();
+      };
+
+      const checkWinner = () => {
+        for (let pattern of winPatterns) {
+          let pos1Val = boxes[pattern[0]].innerText;
+          let pos2Val = boxes[pattern[1]].innerText;
+          let pos3Val = boxes[pattern[2]].innerText;
+
+          if (pos1Val != "" && pos2Val != "" && pos3Val != "") {
+            if (pos1Val === pos2Val && pos2Val === pos3Val) {
+              showWinner(pos1Val);
+              return true;
+            }
+          }
+        }
+      };
+
+      resetBtn.addEventListener("click", resetGame);
+
+      const app = document.querySelector(".app");
+
+      function quit() {
+        app.querySelector(".home").classList.add("show");
+        app.querySelector(".game").classList.remove("show");
+      }
+
+      function toggleMenu() {
+        menuPopup.classList.toggle('open-popup');
+      }
+
+      function hideMenu() {
+        menuPopup.classList.remove('open-popup');
+      }
+    </script>
+  </body>
+</html>
